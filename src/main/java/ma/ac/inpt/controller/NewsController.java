@@ -2,25 +2,30 @@ package ma.ac.inpt.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ma.ac.inpt.exception.ResourceNotFoundException;
 import ma.ac.inpt.model.News;
 import ma.ac.inpt.repository.NewsRepository;
 
+//@CrossOrigin(origins = "*")
+@ComponentScan({"ma.ac.inpt"})
 @RestController
 @RequestMapping("/api")
 public class NewsController {
+	@Autowired
     NewsRepository newsRepository;
 
     // Get All News
@@ -30,8 +35,8 @@ public class NewsController {
 	}
 
     // Create a new News
-	@PostMapping("/news")
-	public News createNote(@Validated @RequestBody News news) {
+	@RequestMapping(value="/news",method=RequestMethod.POST)
+	public News createNote(@Valid @RequestBody News news) {
 	    return newsRepository.save(news);
 	}
 
@@ -45,7 +50,7 @@ public class NewsController {
     // Update a News
 	@PutMapping("/news/{id}")
 	public News updateNews(@PathVariable(value = "id") Long newsId,
-	                                        @Validated @RequestBody News newsDetails) {
+	                                        @Valid @RequestBody News newsDetails) {
 
 	    News news = newsRepository.findById(newsId)
 	            .orElseThrow(() -> new ResourceNotFoundException("News", "id", newsId));

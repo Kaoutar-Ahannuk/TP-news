@@ -11,7 +11,9 @@ import org.springframework.stereotype.Controller;
 
 @SpringBootApplication
 @EnableAutoConfiguration
+@EntityScan(basePackages = {"ma.ac.inpt.model"})
 @ComponentScan(basePackages = {"ma.ac.inpt.controller"})
+@EnableJpaRepositories(basePackages = {"ma.ac.inpt.repository"})
 public class Tp2Application {
 
 	public static void main(String[] args) {
